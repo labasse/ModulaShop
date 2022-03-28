@@ -43,6 +43,16 @@ namespace Catalog.Controllers
             return brand;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpGet("{id}/products")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductByBrand(int id)
+        {
+            return await _context.Product.Where(p => p.Brand.Id == id).ToListAsync();
+        }
+
         // PUT: api/Brands/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Catalog.Data;
 using Catalog.Models;
+using Catalog.Dtos;
 
 namespace Catalog.Controllers
 {
@@ -22,7 +23,6 @@ namespace Catalog.Controllers
             _context = context;
         }
 
-        // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
@@ -49,18 +49,22 @@ namespace Catalog.Controllers
             return product;
         }
 
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="productDto">Information to update (Brand and Type are not alterable.)</param>
+        /// <response code="400"></response>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int? id, Product product)
+        public async Task<IActionResult> PutProduct(int? id, ProductUpdateDto productDto)
         {
-            if (id != product.Id)
+            var product = await _context.Product.FindAsync(id);
+
+            if (product == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(product).State = EntityState.Modified;
-
+            productDto.CopyTo(product);
             try
             {
                 await _context.SaveChangesAsync();
@@ -76,18 +80,27 @@ namespace Catalog.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(ProductCreateDto productDto)
         {
+            var brand = await _context.Brand.FindAsync(productDto.BrandId);
+            var type = await _context.ProductType.FindAsync(productDto.TypeId);
+
+            if(brand==null || type==null)
+            {
+                return BadRequest("Brand or type not found");
+            }
+            var product = productDto.ToProduct(brand, type);
             _context.Product.Add(product);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Catalog.Data;
 using Catalog.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catalog.Controllers
 {
@@ -22,12 +23,19 @@ namespace Catalog.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductType>>> GetProductType()
         {
             return await _context.ProductType.ToListAsync();
         }
 
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
+        /// <param name="id"></param>
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductType>> GetProductType(int? id)
         {
@@ -37,10 +45,26 @@ namespace Catalog.Controllers
             {
                 return NotFound();
             }
-
             return productType;
         }
 
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpGet("{id}/products")]
+        public async Task<ActionResult<ProductType>> GetProductsByProductType(int? id)
+        {
+            // TODO : Implement
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="productType"></param>
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductType(int? id, ProductType productType)
         {
@@ -70,6 +94,11 @@ namespace Catalog.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
+        /// <param name="productType"></param>
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
         {
@@ -79,6 +108,11 @@ namespace Catalog.Controllers
             return CreatedAtAction("GetProductType", new { id = productType.Id }, productType);
         }
 
+        /// <summary>
+        /// TODO: Documentation
+        /// </summary>
+        /// <param name="id"></param>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductType(int? id)
         {
