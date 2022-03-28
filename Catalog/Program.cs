@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen(
         $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml"
     ))
 );
+builder.Services.AddRouting(sp => sp.LowercaseUrls = true);
 
 var app = builder.Build();
 
@@ -33,7 +34,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

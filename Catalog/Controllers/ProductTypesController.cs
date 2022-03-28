@@ -11,7 +11,7 @@ using Catalog.Models;
 
 namespace Catalog.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/product-types")]
     [ApiController]
     public class ProductTypesController : ControllerBase
     {
@@ -22,14 +22,12 @@ namespace Catalog.Controllers
             _context = context;
         }
 
-        // GET: api/ProductTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductType>>> GetProductType()
         {
             return await _context.ProductType.ToListAsync();
         }
 
-        // GET: api/ProductTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductType>> GetProductType(int? id)
         {
@@ -43,8 +41,6 @@ namespace Catalog.Controllers
             return productType;
         }
 
-        // PUT: api/ProductTypes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductType(int? id, ProductType productType)
         {
@@ -74,8 +70,6 @@ namespace Catalog.Controllers
             return NoContent();
         }
 
-        // POST: api/ProductTypes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
         {
@@ -85,7 +79,6 @@ namespace Catalog.Controllers
             return CreatedAtAction("GetProductType", new { id = productType.Id }, productType);
         }
 
-        // DELETE: api/ProductTypes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductType(int? id)
         {

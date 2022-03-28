@@ -29,7 +29,14 @@ namespace Catalog.Controllers
             return await _context.Product.ToListAsync();
         }
 
-        // GET: api/Products/5
+        /// <summary>
+        /// Gets information of a given product
+        /// </summary>
+        /// <param name="id">Identifier of the product to retreive</param>
+        /// <response code="200">A product with the given id has been successfully found</response>
+        /// <response code="404">No product found with the given ID</response>
+        [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type=typeof(string))]
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int? id)
         {
@@ -39,7 +46,6 @@ namespace Catalog.Controllers
             {
                 return NotFound();
             }
-
             return product;
         }
 
