@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Catalog.Data;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<CatalogContext>(options =>
@@ -37,3 +38,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

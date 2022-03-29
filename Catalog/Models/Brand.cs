@@ -11,5 +11,7 @@ namespace Catalog.Models
 
         [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; } = null!;  
+
+        // TODO: Refaire le Equals
     }
 }
