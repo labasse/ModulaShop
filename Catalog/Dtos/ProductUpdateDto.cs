@@ -3,12 +3,12 @@
 namespace Catalog.Dtos
 {
     /// <summary>
-    /// TODO : documentation
+    /// Data used to update the product.
     /// </summary>
-    /// <param name="Name"></param>
-    /// <param name="Description"></param>
-    /// <param name="Price"></param>
-    /// <param name="UrlImage"></param>
+    /// <param name="Name">Product name</param>
+    /// <param name="Description">Product description</param>
+    /// <param name="Price">Product sale price</param>
+    /// <param name="UrlImage">relative url of the product picture</param>
     public record ProductUpdateDto(
         string Name, 
         string? Description, 

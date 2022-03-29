@@ -3,7 +3,7 @@
 namespace Catalog.Models
 {
     /// <summary>
-    /// TODO : Summary
+    /// Product brand
     /// </summary>
     public class Brand
     {

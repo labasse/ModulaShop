@@ -3,7 +3,7 @@
 namespace Catalog.Models
 {
     /// <summary>
-    /// TODO : Summary
+    /// Product information.
     /// </summary>
     public class Product
     {
@@ -22,6 +22,7 @@ namespace Catalog.Models
 
         [Required]
         public Brand Brand { get; set; } = null!;
+        [Required]
         public ProductType Type { get; set; } = null!;
     }
 }

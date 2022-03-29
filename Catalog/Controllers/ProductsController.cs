@@ -23,6 +23,11 @@ namespace Catalog.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// TODO : Documentation
+        /// </summary>
+        /// <response code="200">List of all products</response>
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
@@ -35,8 +40,8 @@ namespace Catalog.Controllers
         /// <param name="id">Identifier of the product to retreive</param>
         /// <response code="200">A product with the given id has been successfully found</response>
         /// <response code="404">No product found with the given ID</response>
-        [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(Product))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type=typeof(string))]
+        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int? id)
         {
