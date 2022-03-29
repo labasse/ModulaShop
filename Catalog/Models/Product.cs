@@ -17,12 +17,14 @@ namespace Catalog.Models
         [Required, Range(0.0, 1_000_000.00)]
         public decimal Price { get; set; }
 
-        [Url]
+        [FileExtensions]
         public string? UrlImage { get; set; } = null;
 
         [Required]
         public Brand Brand { get; set; } = null!;
         [Required]
         public ProductType Type { get; set; } = null!;
+
+        public decimal GetVatPrice(decimal rate) => 0.0m; 
     }
 }
