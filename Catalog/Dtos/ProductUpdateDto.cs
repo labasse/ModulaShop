@@ -2,10 +2,17 @@
 
 namespace Catalog.Dtos
 {
+    /// <summary>
+    /// TODO : documentation
+    /// </summary>
+    /// <param name="Name"></param>
+    /// <param name="Description"></param>
+    /// <param name="Price"></param>
+    /// <param name="UrlImage"></param>
     public record ProductUpdateDto(
         string Name, 
         string? Description, 
-        decimal Prix,
+        decimal Price,
         string? UrlImage
     )
     {
@@ -13,7 +20,7 @@ namespace Catalog.Dtos
         {
             product.Name = Name;
             product.Description = Description;
-            product.Prix = Prix;
+            product.Price = Price;
             product.UrlImage = UrlImage;
         }
     }

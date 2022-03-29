@@ -50,7 +50,7 @@ namespace Catalog.Controllers
         }
 
         /// <summary>
-        /// 
+        /// TODO : Documentation
         /// </summary>
         /// <param name="id"></param>
         /// <param name="productDto">Information to update (Brand and Type are not alterable.)</param>
@@ -84,7 +84,7 @@ namespace Catalog.Controllers
         }
 
         /// <summary>
-        /// 
+        /// TODO : Documentation
         /// </summary>
         /// <param name="productDto"></param>
         /// <returns></returns>
@@ -104,7 +104,11 @@ namespace Catalog.Controllers
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        // DELETE: api/Products/5
+        /// <summary>
+        /// TODO : Documentation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int? id)
         {

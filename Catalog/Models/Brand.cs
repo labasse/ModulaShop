@@ -2,6 +2,9 @@
 
 namespace Catalog.Models
 {
+    /// <summary>
+    /// TODO : Summary
+    /// </summary>
     public class Brand
     {
         public int? Id { get; set; }

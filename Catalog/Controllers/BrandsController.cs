@@ -22,39 +22,33 @@ namespace Catalog.Controllers
             _context = context;
         }
 
-        // GET: api/Brands
+        /// <summary>
+        /// TODO : Documentation
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Brand>>> GetBrand()
         {
             return await _context.Brand.ToListAsync();
         }
 
-        // GET: api/Brands/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Brand>> GetBrand(int? id)
-        {
-            var brand = await _context.Brand.FindAsync(id);
-
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            return brand;
-        }
-
         /// <summary>
-        /// 
+        /// TODO : Documentation
         /// </summary>
         /// <param name="id"></param>
         [HttpGet("{id}/products")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductByBrand(int id)
         {
+            // TODO : Check Id
             return await _context.Product.Where(p => p.Brand.Id == id).ToListAsync();
         }
 
-        // PUT: api/Brands/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// TODO : Documentation + Authorize
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="brand"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBrand(int? id, Brand brand)
         {
@@ -84,8 +78,11 @@ namespace Catalog.Controllers
             return NoContent();
         }
 
-        // POST: api/Brands
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// TODO : Documentation (Id ignored) + Authorize
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Brand>> PostBrand(Brand brand)
         {
@@ -95,7 +92,10 @@ namespace Catalog.Controllers
             return CreatedAtAction("GetBrand", new { id = brand.Id }, brand);
         }
 
-        // DELETE: api/Brands/5
+        /// <summary>
+        /// TODO : Documentation + Authorize
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBrand(int? id)
         {

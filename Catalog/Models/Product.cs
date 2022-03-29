@@ -2,6 +2,9 @@
 
 namespace Catalog.Models
 {
+    /// <summary>
+    /// TODO : Summary
+    /// </summary>
     public class Product
     {
         public int? Id { get; set; } = null;
@@ -12,7 +15,7 @@ namespace Catalog.Models
         public string? Description { get; set; } = null;
         
         [Required, Range(0.0, 1_000_000.00)]
-        public decimal Prix { get; set; }
+        public decimal Price { get; set; }
 
         [Url]
         public string? UrlImage { get; set; } = null;
