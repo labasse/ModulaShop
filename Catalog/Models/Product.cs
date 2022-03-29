@@ -25,6 +25,9 @@ namespace Catalog.Models
         [Required]
         public ProductType Type { get; set; } = null!;
 
-        public decimal GetVatPrice(decimal rate) => 0.0m; 
+        public decimal GetVatPrice(decimal rate) =>
+            rate<0m 
+            ? throw new ArgumentOutOfRangeException()
+            : Math.Round((rate+100m)*Price/100m, 2); 
     }
 }
