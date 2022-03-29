@@ -2,14 +2,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Catalog.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System;
 
 namespace CatalogTest
 {
     [TestClass]
     public class ProductTest
     {
-
-
         public (bool, IEnumerable<ValidationResult>) ValidateProduct(Product prod)
         {
             var context = new ValidationContext(prod);
@@ -30,27 +29,37 @@ namespace CatalogTest
             Type = new ProductType() { Id = 1, Label = "T1" }
         };
 
-        [TestMethod] 
-        public void SetNormalProduct() 
-        {
-            var (ok, results) = ValidateProduct(NewUsualProduct());  
-
-            Assert.IsTrue(ok);
-        }
-        [TestMethod] public void SetNameMinimal() 
+        public void AssertValidProductAfterPropertySet(Action<Product> act)
         {
             var test = NewUsualProduct();
-            test.Name = "Aa";
+            act(test);
 
             var (ok, results) = ValidateProduct(test);
-            
+
             Assert.IsTrue(ok);
         }
-        [TestMethod] public void SetNameMaximal() { }
+
+        [TestMethod] 
+        public void SetNormalProduct() 
+            => AssertValidProductAfterPropertySet(p => { });
+        
+        [TestMethod]
+        public void SetNameMinimal() 
+            => AssertValidProductAfterPropertySet(p => {
+                p.Name = "Aa";
+            });
+        
+        [TestMethod]
+        public void SetNameMaximal() 
+        {
+            
+        }
         [TestMethod] public void SetNullDescription() { }
         [TestMethod] public void SetEmptyDescription() { }
         [TestMethod] public void SetMinPrice() { }
         [TestMethod] public void SetMaxPrice() { }
+        
+
         [TestMethod] public void SetNameTooShort() { }
         [TestMethod] public void SetNameTooLong() { }
         [TestMethod] public void SetPriceNegative() { }
