@@ -25,3 +25,5 @@ app.MapPut   ("api/carts/{id:guid}/lines/{lineid:int}", (Guid id, int lineid, Li
 app.MapDelete("api/carts/{id:guid}/lines/{lineid:int}", (Guid id, int lineid) => "Not implemented");
 
 app.Run();
+
+public partial class Program { }

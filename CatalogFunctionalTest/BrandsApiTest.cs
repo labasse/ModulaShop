@@ -80,7 +80,7 @@ namespace CatalogFunctionalTest
         /// <summary>
         /// Exemple de test d'intégration : Test du controleur
         /// </summary>
-        [TestMethod]
+        [TestMethod, Ignore]
         public async void IntegrationSample_BrandControllerGetBrands()
         {
             var options = new DbContextOptionsBuilder<CatalogContext>()
