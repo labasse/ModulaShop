@@ -1,18 +1,21 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Threading.Tasks;
+
 using System;
-using Catalog;
-using Catalog.Models;
-using Catalog.Data;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Json;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http;
-using System.Net;
+
+using Catalog.Models;
+using Catalog.Data;
+using Catalog.Controllers;
+using System.Linq;
 
 namespace CatalogFunctionalTest
 {
@@ -68,11 +71,35 @@ namespace CatalogFunctionalTest
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(3, newBrand.Id);
         }
-
         // TODO: CreateNewBrandNoName
         // TODO: CreateNewBrandEmptyName
         // TODO: CreateNewBrandNameTooLong
         // TODO: UpdateBrandUsual
         // TODO: ...
+
+        /// <summary>
+        /// Exemple de test d'intégration : Test du controleur
+        /// </summary>
+        [TestMethod]
+        public async void IntegrationSample_BrandControllerGetBrands()
+        {
+            var options = new DbContextOptionsBuilder<CatalogContext>()
+               .UseInMemoryDatabase(databaseName: "Test")
+               .Options;
+            using var context = new CatalogContext(options);
+
+            context.Brand.Add(new Brand() { Name = "Azure" });
+            context.Brand.Add(new Brand() { Name = ".Net" });
+            context.SaveChanges();
+
+            var controller = new BrandsController(context);
+
+            var brandsResult = await controller.GetBrand();
+
+            CollectionAssert.AreEqual(new Brand[] {
+                new Brand() { Id=1, Name="Azure" },
+                new Brand() { Id=2, Name=".Net" }
+            }, brandsResult.Value?.ToList());
+        }
     }
 }
