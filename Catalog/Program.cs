@@ -6,9 +6,12 @@ using Catalog.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<CatalogContext>(options =>
+if(!builder.Environment.IsEnvironment("Test"))
+{
+    builder.Services.AddDbContext<CatalogContext>(options =>
 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogContext")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogContext")));
+}
 
 // Add services to the container.
 
