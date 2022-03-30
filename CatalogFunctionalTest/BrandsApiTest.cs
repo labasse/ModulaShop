@@ -18,17 +18,20 @@ namespace CatalogFunctionalTest
 
             var response = await client.GetAsync("api/brands");
             var brands = JsonSerializer.Deserialize<Brand[]>(
-                await response.Content.ReadAsStreamAsync()
+                await response.Content.ReadAsStreamAsync(),
+                new JsonSerializerOptions() { 
+                    PropertyNameCaseInsensitive=true
+                }
             );
 
             response.EnsureSuccessStatusCode();
-            //CollectionAssert.AreEqual(new Brand[] {
-            //    new Brand() { Id=1, Name="Azure" },
-            //    new Brand() { Id=2, Name=".Net" },
-            //    new Brand() { Id=3, Name="Visual Studio" },
-            //    new Brand() { Id=6, Name="SQL Server" },
-            //    new Brand() { Id=7, Name="Other" }
-            //}, brands);
+            CollectionAssert.AreEqual(new Brand[] {
+                new Brand() { Id=1, Name="Azure" },
+                new Brand() { Id=2, Name=".Net" },
+                new Brand() { Id=3, Name="Visual Studio" },
+                new Brand() { Id=6, Name="SQL Server" },
+                new Brand() { Id=7, Name="Other" }
+            }, brands);
         }
     }
 }
