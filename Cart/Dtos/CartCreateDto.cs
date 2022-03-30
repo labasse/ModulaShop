@@ -1,6 +1,5 @@
 ﻿namespace Cart.Dtos
 {
-    public class CartCreateDto
-    {
-    }
+    public record CartCreateDto()
+    { }
 }

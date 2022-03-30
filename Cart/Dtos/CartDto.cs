@@ -1,6 +1,6 @@
 ﻿    namespace Cart.Dtos
 {
-    public class CartDto
+    public record CartDto(Guid Id, LineDto[] Lines, decimal TotalPrice)
     {
     }
 }

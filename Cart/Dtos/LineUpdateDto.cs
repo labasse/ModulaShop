@@ -1,6 +1,5 @@
 ﻿namespace Cart.Dtos
 {
-    public class LineUpdateDto
-    {
-    }
+    public record LineUpdateDto(int Qty)
+    { }
 }

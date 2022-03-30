@@ -1,6 +1,5 @@
 ﻿namespace Cart.Dtos
 {
-    public class LineCreateDto
-    {
-    }
+    public record LineCreateDto(int ProductId, int Qty)
+    { }
 }
