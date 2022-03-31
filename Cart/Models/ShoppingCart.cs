@@ -17,6 +17,14 @@
         }
         private List<Item> lines = new ();
 
+        public int GetLineIndex(int ProductId)
+        {
+            for (var i = 0; i < lines.Count; i++)
+                if (lines[i].ProductId == ProductId)
+                    return i;
+            return -1;
+        }
+        
         public Guid Id { get; } = Guid.NewGuid ();
         public IEnumerable<Item> Lines => lines;
         public decimal TotalPrice => lines.Sum(l => l.Price * l.Qty);

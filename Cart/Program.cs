@@ -1,5 +1,6 @@
 using Cart.Dtos;
 using Cart.Models;
+using Cart.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,48 @@ app.MapDelete("api/carts/{id:guid}", (Guid id) => {
     return Results.NotFound("No cart with this id");
 });
 
-app.MapPost  ("api/carts/{id:guid}/lines", (Guid id, LineCreateDto line) => "Not implemented");
+app.MapPost  ("api/carts/{id:guid}/lines", async (Guid id, LineCreateDto lineDto) =>
+{
+    if(!carts.ContainsKey(id))
+    {
+        return Results.UnprocessableEntity("No cart with this id");
+    }
+    else if(lineDto.Qty <= 0)
+    {
+        return Results.UnprocessableEntity("Quantity must be strictly bigger than 0");
+    }
+    var cart = carts[id];
+    var index = cart.GetLineIndex(lineDto.ProductId);
+
+    if (index < 0) {
+        using var httpClient = new HttpClient();
+        var catalogApi = new CatalogApiProxy("https://localhost:7247", httpClient);
+
+        try
+        {
+            var product = await catalogApi.GetProductAsync(lineDto.ProductId);
+
+            index = cart.Lines.Count();
+            carts[id].AddItem(new ShoppingCart.Item(lineDto.ProductId, product.Name, (decimal)product.Price)
+            {
+                Qty = lineDto.Qty
+            });
+        }
+        catch (ApiException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+    }
+    else
+    {
+        cart.Lines.ElementAt(index).Qty += lineDto.Qty;
+    }
+    return Results.Created(
+        $"api/carts/{id}/lines/{index}",
+        LineDto.FromCartItem(index, cart.Lines.ElementAt(index))
+    );
+});
+
 app.MapPut   ("api/carts/{id:guid}/lines/{lineid:int}", (Guid id, int lineid, LineUpdateDto line)=>"Not implemented");
 app.MapDelete("api/carts/{id:guid}/lines/{lineid:int}", (Guid id, int lineid) => "Not implemented");
 
