@@ -4,7 +4,7 @@
     {
         Draft,
         Validated,
-        Shipped,
-        Received
+        Paid,
+        Shipped
     }
 }

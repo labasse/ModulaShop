@@ -31,21 +31,54 @@ namespace Order.Controllers
             throw new NotImplementedException();
         }
         [HttpGet("{idOrder}/actions")]
-        public async Task<ActionResult<IEnumerable<OrderCmdDto>>> GetOrderActions(int id, OrderEntity order)
+        public async Task<ActionResult<IEnumerable<OrderCmdDto>>> GetOrderActions(int idOrder)
         {
-            throw new NotImplementedException();
+            OrderEntity order = context.Order.Find(idOrder);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order.Actions.Select(action => OrderCmdDto.FromOrderCmd(action)));
         }
 
         [HttpPost("{idOrder}/actions")]
         public async Task<ActionResult<OrderCmdDto>> CreateOrderAction(int idOrder, OrderCmdDto cmd)
         {
-            throw new NotImplementedException();
+            OrderEntity order = context.Order.Find(idOrder);
+
+            if(order == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var orderCmd = cmd.ToOrderCmd();
+                int index = order.Actions.Count();
+
+                order.AddAction(orderCmd);
+                return Created($"api/orders/{idOrder}/actions/{index}", orderCmd);
+            }
+            catch(InvalidOperationException e)
+            {
+                return UnprocessableEntity(e.Message);
+            }
         }
 
         [HttpGet("{idOrder}/actions/{idAction}")]
         public async Task<ActionResult<OrderCmdDto>> GetOrderActions(int idOrder, int idAction)
         {
-            throw new NotImplementedException();
+            OrderEntity order = context.Order.Find(idOrder);
+
+            if (order == null)
+            {
+                return NotFound("Bad order Id");
+            }
+            if(idAction >= order.Actions.Count())
+            {
+                return NotFound("Bad action Id");
+            }
+            return Ok(OrderCmdDto.FromOrderCmd(order.Actions.ElementAt(idAction)));
         }
     }
 }
