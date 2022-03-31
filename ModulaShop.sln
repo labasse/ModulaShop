@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogTest", "CatalogTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogFunctionalTest", "CatalogFunctionalTest\CatalogFunctionalTest.csproj", "{816C60F8-1441-416D-A2DF-8437B8070984}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart", "Cart\Cart.csproj", "{E89C7398-578D-4FF2-8F43-841B6F3B3854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cart", "Cart\Cart.csproj", "{E89C7398-578D-4FF2-8F43-841B6F3B3854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartTest", "CartTest\CartTest.csproj", "{A6B5CDA0-3D3A-4B10-8BA2-9CDF9EE8A12A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartTest", "CartTest\CartTest.csproj", "{A6B5CDA0-3D3A-4B10-8BA2-9CDF9EE8A12A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order", "Order\Order.csproj", "{F87BE528-F870-4844-8946-A75FE17AB9F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A6B5CDA0-3D3A-4B10-8BA2-9CDF9EE8A12A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6B5CDA0-3D3A-4B10-8BA2-9CDF9EE8A12A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6B5CDA0-3D3A-4B10-8BA2-9CDF9EE8A12A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F87BE528-F870-4844-8946-A75FE17AB9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87BE528-F870-4844-8946-A75FE17AB9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87BE528-F870-4844-8946-A75FE17AB9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87BE528-F870-4844-8946-A75FE17AB9F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
