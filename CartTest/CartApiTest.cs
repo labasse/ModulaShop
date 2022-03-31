@@ -30,7 +30,7 @@ namespace CartTest
             return (client, await CreateCart(client));
         }
 
-        [TestMethod] public async void GetCartsEmpty()
+        [TestMethod] public async Task GetCartsEmpty()
         {
             var client = CreateCartApiClient();
 
@@ -39,7 +39,7 @@ namespace CartTest
             Assert.AreEqual(0, carts.Length);
         }
 
-        [TestMethod] public async void GetCarts()
+        [TestMethod] public async Task GetCarts()
         {
             var (client, cart1) = await CreateClientWithCart(); 
             var cart2 = await CreateCart(client); 
@@ -49,7 +49,7 @@ namespace CartTest
             CollectionAssert.AreEquivalent(new CartDto[] { cart1, cart2 }, carts);
         }
 
-        [TestMethod] public async void GetExistingCart()
+        [TestMethod] public async Task GetExistingEmptyCart()
         {
             var (client, cart1) = await CreateClientWithCart();
 
@@ -57,7 +57,16 @@ namespace CartTest
 
             Assert.AreEqual(cart1, actual);
         }
-        [TestMethod] public async void GetUnknownCart()
+        [TestMethod] public async Task GetExistingFilledCart()
+        {
+            var (client, cart1) = await CreateClientWithCart();
+            // TODO : Fill Cart
+
+            var actual = (await client.GetFromJsonAsync<CartDto>($"api/carts/{cart1.Id}"))!;
+
+            Assert.AreEqual(cart1, actual);
+        }
+        [TestMethod] public async Task GetUnknownCart()
         {
             var (client, cart1) = await CreateClientWithCart();
 
@@ -65,8 +74,7 @@ namespace CartTest
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.Result.StatusCode);
         }
-        [TestMethod]
-        public async void CreateCart()
+        [TestMethod] public async Task CreateCart()
         {
             var client = CreateCartApiClient();
 
@@ -77,33 +85,33 @@ namespace CartTest
             Assert.AreEqual(0m, cart.TotalPrice);
             Assert.AreEqual(Array.Empty<LineDto>(), cart.Lines);
         }
-        [TestMethod] public async void DeleteExistingCart() {
+        [TestMethod] public async Task DeleteExistingCart() {
             var (client, cart1) = await CreateClientWithCart();
 
             var response = (await client.DeleteAsync($"api/carts/{cart1.Id}"));
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
-        [TestMethod] public async void DeleteUnknownCart() {
+        [TestMethod] public async Task DeleteUnknownCart() {
             var (client, cart1) = await CreateClientWithCart();
 
             var response = (await client.DeleteAsync($"api/carts/{UnknownCartId}"));
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
-        [TestMethod] public async void CreateFirstLine() {}
-        [TestMethod] public async void CreateSecondLine() {}
-        [TestMethod] public async void CreateLineProductAlreadyInCart() {}
-        [TestMethod] public async void CreateLineInUnknownCart() {}
-        [TestMethod] public async void CreateLineUnknownProduct() {}
-        [TestMethod] public async void CreateLineQuantity0() {}
-        [TestMethod] public async void CreateLineQuantityNegative() { }
-        [TestMethod] public async void UpdateLine() {}
-        [TestMethod] public async void UpdateLineProductChange() {}
-        [TestMethod] public async void UpdateLineSameQuantity() {}
-        [TestMethod] public async void UpdateLineQuantity0() {}
-        [TestMethod] public async void UpdateLineQuantityNegative() { }
-        [TestMethod] public async void DeleteLine() { }
-        [TestMethod] public async void DeleteLineUnknown() {  }
+        [TestMethod, TestCategory("Lines")] public async Task CreateFirstLine() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateSecondLine() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineProductAlreadyInCart() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineInUnknownCart() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineUnknownProduct() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineQuantity0() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineQuantityNegative() { }
+        [TestMethod, TestCategory("Lines")] public async Task UpdateLine() {}
+        [TestMethod, TestCategory("Lines")] public async Task UpdateLineProductChange() {}
+        [TestMethod, TestCategory("Lines")] public async Task UpdateLineSameQuantity() {}
+        [TestMethod, TestCategory("Lines")] public async Task UpdateLineQuantity0() {}
+        [TestMethod, TestCategory("Lines")] public async Task UpdateLineQuantityNegative() { }
+        [TestMethod, TestCategory("Lines")] public async Task DeleteLine() { }
+        [TestMethod, TestCategory("Lines")] public async Task DeleteLineUnknown() {  }
     }
 }
