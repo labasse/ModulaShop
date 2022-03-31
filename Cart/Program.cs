@@ -1,4 +1,5 @@
 using Cart.Dtos;
+using Cart.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +16,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var carts = new Dictionary<Guid, CartDto>();
+var carts = new Dictionary<Guid, ShoppingCart>();
 
-app.MapGet   ("api/carts", () => carts.Values);
-app.MapGet   ("api/carts/{id:guid}", (Guid id) => carts.ContainsKey(id) ? Results.Ok(carts[id]) : Results.NotFound("No cart with this id"));
+app.MapGet   ("api/carts", () => carts.Values.Select(cart => CartDto.FromCart(cart)));
+app.MapGet   ("api/carts/{id:guid}", (Guid id) 
+    => carts.ContainsKey(id) 
+        ? Results.Ok(CartDto.FromCart(carts[id])) 
+        : Results.NotFound("No cart with this id")
+);
 app.MapPost  ("api/carts", (CartCreateDto cart) => {
-    var newCart = new CartDto(Guid.NewGuid(), Array.Empty<LineDto>(), 0);
+    var newCart = new ShoppingCart();
 
     carts.Add(newCart.Id, newCart);
-    return Results.Created($"api/carts/{newCart.Id}", newCart);
+    return Results.Created($"api/carts/{newCart.Id}", CartDto.FromCart(newCart));
 });
 app.MapDelete("api/carts/{id:guid}", (Guid id) => {
     if (carts.ContainsKey(id))

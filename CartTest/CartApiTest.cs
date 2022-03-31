@@ -60,7 +60,8 @@ namespace CartTest
         [TestMethod] public async Task GetExistingFilledCart()
         {
             var (client, cart1) = await CreateClientWithCart();
-            // TODO : Fill Cart
+            
+            var response = await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(1, 2));
 
             var actual = (await client.GetFromJsonAsync<CartDto>($"api/carts/{cart1.Id}"))!;
 
@@ -99,9 +100,37 @@ namespace CartTest
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
-        [TestMethod, TestCategory("Lines")] public async Task CreateFirstLine() {}
-        [TestMethod, TestCategory("Lines")] public async Task CreateSecondLine() {}
-        [TestMethod, TestCategory("Lines")] public async Task CreateLineProductAlreadyInCart() {}
+        [TestMethod, TestCategory("Lines")] public async Task CreateFirstLine(){
+            var (client, cart1) = await CreateClientWithCart();
+
+            var response = await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(42, 2));
+            var line = (await response.Content.ReadFromJsonAsync<LineDto>())!;
+
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual(new LineDto(1, 42, "foo", 2, 8.5m), line);
+        }
+        [TestMethod, TestCategory("Lines")] public async Task CreateSecondLine() {
+            var (client, cart1) = await CreateClientWithCart();
+
+            await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(42, 2));
+            
+            var response = await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(43, 3));
+            var line = (await response.Content.ReadFromJsonAsync<LineDto>())!;
+
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual(new LineDto(2, 43, "bar", 3, 9.5m), line);
+        }
+        [TestMethod, TestCategory("Lines")] public async Task CreateLineProductAlreadyInCart() {
+            var (client, cart1) = await CreateClientWithCart();
+
+            await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(42, 2));
+
+            var response = await client.PostAsJsonAsync($"api/carts/{cart1.Id}/lines", new LineCreateDto(42, 3));
+            var line = (await response.Content.ReadFromJsonAsync<LineDto>())!;
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(new LineDto(1, 42, "foo", 5, 8.5m), line);
+        }
         [TestMethod, TestCategory("Lines")] public async Task CreateLineInUnknownCart() {}
         [TestMethod, TestCategory("Lines")] public async Task CreateLineUnknownProduct() {}
         [TestMethod, TestCategory("Lines")] public async Task CreateLineQuantity0() {}
