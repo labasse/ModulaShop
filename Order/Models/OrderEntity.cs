@@ -3,16 +3,20 @@
     public class OrderEntity
     {
         private List<OrderCmd> history = new();
-        public string? ShippingAddress { get; set; } = null;
+
+
+        public OrderStatus Status { get; set; } = OrderStatus.Draft;
+
         public decimal ShippingFees { get; set; } = 0m;
 
-        public bool Paid { get; set; } = false;
+        public bool Paid => Status >= OrderStatus.Shipped;
 
         public IEnumerable<OrderCmd> Actions => history;
 
         public void AddAction(OrderCmd action)
         {
-
+            action.Apply(this);
+            history.Add(action);
         }
 
     }
