@@ -83,7 +83,7 @@ namespace CartTest
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(0m, cart.TotalPrice);
-            Assert.AreEqual(Array.Empty<LineDto>(), cart.Lines);
+            CollectionAssert.AreEqual(Array.Empty<LineDto>(), cart.Lines);
         }
         [TestMethod] public async Task DeleteExistingCart() {
             var (client, cart1) = await CreateClientWithCart();
