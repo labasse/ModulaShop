@@ -9,6 +9,7 @@ namespace Order.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly ILogger<OrdersController> _logger;
+        private OrderDbContext _context;
 
         public OrdersController(ILogger<OrdersController> logger)
         {
@@ -16,24 +17,27 @@ namespace Order.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderEntity>>> Get()
+        public async Task<IEnumerable<OrderEntity>> Get()
         {
-            return Array.Empty<OrderEntity>();
+            return _context.Orders;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<OrderEntity>>> GetOrder(int id)
+        public async Task<ActionResult<OrderEntity>> GetOrder(int id)
         {
-            return Array.Empty<OrderEntity>();
+            var order = await _context.GetOrderByIdAsync(id);
+
+            return order==null ? NotFound() : Ok(order);
         }
         [HttpPost]
         public async Task<ActionResult<OrderEntity>> NewOrder(OrderEntity order)
         {
             throw new NotImplementedException();
         }
+
         [HttpGet("{idOrder}/actions")]
         public async Task<ActionResult<IEnumerable<OrderCmdDto>>> GetOrderActions(int idOrder)
         {
-            OrderEntity order = context.Order.Find(idOrder);
+            var order = await _context.GetOrderByIdAsync(idOrder);
 
             if (order == null)
             {
@@ -45,7 +49,7 @@ namespace Order.Controllers
         [HttpPost("{idOrder}/actions")]
         public async Task<ActionResult<OrderCmdDto>> CreateOrderAction(int idOrder, OrderCmdDto cmd)
         {
-            OrderEntity order = context.Order.Find(idOrder);
+            var order = await _context.GetOrderByIdAsync(idOrder);
 
             if(order == null)
             {
@@ -68,7 +72,7 @@ namespace Order.Controllers
         [HttpGet("{idOrder}/actions/{idAction}")]
         public async Task<ActionResult<OrderCmdDto>> GetOrderActions(int idOrder, int idAction)
         {
-            OrderEntity order = context.Order.Find(idOrder);
+            var order = await _context.GetOrderByIdAsync(idOrder);
 
             if (order == null)
             {

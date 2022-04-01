@@ -10,6 +10,7 @@
             {
                 throw new InvalidOperationException("Order is already validated");
             }
+            order.Validated = DateTime.Now;
             order.Status = OrderStatus.Validated;
             order.ShippingFees = ShippingFees;
         }
